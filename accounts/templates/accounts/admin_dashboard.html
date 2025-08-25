@@ -1,0 +1,162 @@
+{% extends "accounts/base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Welcome, Admin {{ user.username }}!</h1>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Users</h5>
+                <p class="card-text">{{ total_users }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Admins</h5>
+                <p class="card-text">{{ total_admins }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Employers</h5>
+                <p class="card-text">{{ total_employers }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Job Seekers</h5>
+                <p class="card-text">{{ total_jobseekers }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Job Posting Form -->
+<h2 class="mt-5">Post a New Job</h2>
+<form method="POST">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="mb-3">
+            <label class="form-label">{{ field.label }}</label>
+            {{ field|add_class:"form-control" }}
+            {% if field.errors %}
+                <div class="text-danger small">{{ field.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <a href="{% url 'jobboard:create_job' %}" class="btn btn-success">Post Job</a>
+</form>
+
+<!-- Jobs Posted -->
+<h2 class="mt-5">Jobs Posted</h2>
+<div class="row">
+   {% for job in jobs %}
+<div class="col-md-4">
+  <div class="card mb-3 shadow-sm">
+    <div class="card-body position-relative">
+      <h5 class="card-title">{{ job.job_title }}</h5>
+      <p class="card-text"><strong>Institution:</strong> {{ job.institution }}</p>
+      <p class="card-text"><strong>Posted:</strong> {{ job.date_posted|date:"Y-m-d" }}</p>
+      <p class="card-text"><strong>Status:</strong> {{ job.is_active|yesno:"Active,Inactive" }}</p>
+
+      <!-- Expand Button -->
+      <button class="btn btn-outline-success btn-sm mt-2 d-flex align-items-center"
+              type="button" data-bs-toggle="collapse" 
+              data-bs-target="#jobDetails{{ job.id }}">
+        <span class="me-1">Expand</span>
+        <i class="bi bi-chevron-down"></i>
+      </button>
+
+      <div class="collapse mt-3" id="jobDetails{{ job.id }}">
+        <p><strong>Department:</strong> {{ job.department }}</p>
+        <p><strong>Faculty:</strong> {{ job.faculty }}</p>
+        <p><strong>Location:</strong> {{ job.location }}</p>
+        <p><strong>Salary:</strong> {{ job.salary }}</p>
+        <hr>
+        <p><strong>Description:</strong></p>
+        <p>{{ job.job_description }}</p>
+      </div>
+
+      <!-- Dropdown Menu -->
+      <div class="dropdown position-absolute top-0 end-0 m-2">
+        <button class="btn btn-light btn-sm" type="button" id="dropdownMenu{{ job.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-three-dots-vertical"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenu{{ job.id }}">
+          <li>
+            <a class="dropdown-item" href="{% url 'jobboard:update_job' job.id %}">Edit</a>
+          </li>
+          <li>
+            <a class="dropdown-item text-danger" href="{% url 'jobboard:delete_job' job.id %}">Delete</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% empty %}
+<p class="text-muted">No jobs posted yet.</p>
+{% endfor %}
+</div>
+
+<!-- Applications Section -->
+<h2 class="mt-5"><i class="bi bi-file-text"></i> Submitted Applications</h2>
+
+{% if applications %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>#</th>
+                <th><i class="bi bi-person"></i> Applicant</th>
+                <th><i class="bi bi-briefcase"></i> Job</th>
+                <th><i class="bi bi-calendar"></i> Date Applied</th>
+                <th><i class="bi bi-eye"></i> Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for app in applications %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <span class="badge bg-primary">{{ app.name }}</span>
+                </td>
+                <td>
+                    <span class="badge bg-success">{{ app.job.job_title }}</span>
+                </td>
+                <td>{{ app.applied_at|date:"M d, Y H:i" }}</td>
+                <td>
+                    <!-- View Button -->
+                    <a href="{% url 'accounts:application_detail' app.id %}" class="btn btn-sm btn-info">
+                        <i class="bi bi-eye"></i> View
+                    </a>
+
+                    <!-- Delete Button -->
+                    <form action="{% url 'accounts:delete_application' app.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="text-muted fs-5"><i class="bi bi-exclamation-circle"></i> No applications submitted yet.</p>
+{% endif %}
+
+
+{% endblock %}

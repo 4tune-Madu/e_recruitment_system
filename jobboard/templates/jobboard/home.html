@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg border-0 rounded-4 p-5 bg-white text-center" style="max-width: 700px; width: 100%;">
+        <h1 class="fw-bold mb-3" style="white-space: normal;">Welcome to the e-Recruitment System</h1>
+        <p class="lead text-muted mb-4">
+            Find and apply for jobs within your institution easily and efficiently.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{% url 'accounts:signup' %}" class="btn btn-primary btn-lg px-4">Sign Up</a>
+            <a href="{% url 'accounts:login' %}" class="btn btn-success btn-lg px-4">Login</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

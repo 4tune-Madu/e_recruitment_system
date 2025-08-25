@@ -1,0 +1,44 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}User Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Welcome, {{ user.username }}!</h1>
+
+<div class="row">
+    <!-- Profile -->
+    <div class="col-md-4">
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">My Profile</h5>
+                <p class="card-text">View or update your profile information.</p>
+                <a href="#" class="btn btn-primary">Go</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Applications -->
+    <div class="col-md-4">
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">My Applications</h5>
+                <p class="card-text">Check the status of your job applications.</p>
+                <a href="#" class="btn btn-primary">Go</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Browse Jobs -->
+    <div class="col-md-4">
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Browse Jobs</h5>
+                <p class="card-text">View and apply for available job listings.</p>
+                <a href="{% url 'jobboard:job_list' %}" class="btn btn-success">
+                    <i class="bi bi-briefcase-fill me-1"></i> View Jobs
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

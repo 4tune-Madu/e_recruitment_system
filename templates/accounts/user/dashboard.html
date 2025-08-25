@@ -1,0 +1,44 @@
+{% extends "accounts/user/base_user.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body text-center">
+                <h2 class="fw-bold">Welcome, {{ request.user.username }} 👋</h2>
+                <p class="text-muted">Here you can browse and apply for available jobs.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row text-center">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+            <div class="card-body">
+                <h4 class="fw-bold">Browse Jobs</h4>
+                <p class="text-muted">Explore available jobs in your institution.</p>
+                <a href="{% url 'job_list' %}" class="btn btn-primary btn-sm">View Jobs</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+            <div class="card-body">
+                <h4 class="fw-bold">My Applications</h4>
+                <p class="text-muted">Check the jobs you’ve applied for.</p>
+                <a href="#" class="btn btn-success btn-sm">View Applications</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+            <div class="card-body">
+                <h4 class="fw-bold">Profile</h4>
+                <p class="text-muted">Update your personal details and CV.</p>
+                <a href="#" class="btn btn-warning btn-sm">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

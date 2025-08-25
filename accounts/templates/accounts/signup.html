@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg border-0 rounded-4 p-5 bg-white" style="max-width: 500px; width: 100%;">
+        <h2 class="text-center mb-4">Create an Account</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label">{{ field.label }}</label>
+                    {{ field|add_class:"form-control" }}
+                    {% if field.errors %}
+                        <div class="text-danger small">{{ field.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="mb-3">
+                <p class="fw-bold">Password must contain:</p>
+                <ul>
+                    <li id="length" class="invalid">At least 8 characters</li>
+                    <li id="uppercase" class="invalid">An uppercase letter</li>
+                    <li id="lowercase" class="invalid">A lowercase letter</li>
+                    <li id="number" class="invalid">A number</li>
+                    <li id="special" class="invalid">A special character (!@#$%^&*)</li>
+                </ul>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+        </form>
+        <p class="mt-3 text-center">Already have an account? <a href="{% url 'accounts:login' %}">Login</a></p>
+    </div>
+</div>
+
+<script>
+const passwordInput = document.getElementById("id_password1");
+if(passwordInput){
+    passwordInput.addEventListener("keyup", function() {
+        const value = passwordInput.value;
+        document.getElementById("length").className = value.length >= 8 ? "valid" : "invalid";
+        document.getElementById("uppercase").className = /[A-Z]/.test(value) ? "valid" : "invalid";
+        document.getElementById("lowercase").className = /[a-z]/.test(value) ? "valid" : "invalid";
+        document.getElementById("number").className = /\d/.test(value) ? "valid" : "invalid";
+        document.getElementById("special").className = /[!@#$%^&*]/.test(value) ? "valid" : "invalid";
+    });
+}
+</script>
+{% endblock %}

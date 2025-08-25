@@ -1,0 +1,44 @@
+{% extends "accounts/admin/base_admin.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body text-center">
+                <h2 class="fw-bold">Admin Dashboard 👨‍💼</h2>
+                <p class="text-muted">Manage job postings and oversee applications.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row text-center">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+            <div class="card-body">
+                <h4 class="fw-bold">Post a Job</h4>
+                <p class="text-muted">Create and publish new job listings.</p>
+                <a href="#" class="btn btn-primary btn-sm">Add Job</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+            <div class="card-body">
+                <h4 class="fw-bold">Manage Jobs</h4>
+                <p class="text-muted">Edit or delete existing job postings.</p>
+                <a href="{% url 'job_list' %}" class="btn btn-success btn-sm">Manage Jobs</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+            <div class="card-body">
+                <h4 class="fw-bold">Applications</h4>
+                <p class="text-muted">Review all submitted applications.</p>
+                <a href="#" class="btn btn-warning btn-sm">View Applications</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

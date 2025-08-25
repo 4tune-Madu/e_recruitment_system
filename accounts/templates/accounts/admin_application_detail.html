@@ -1,0 +1,30 @@
+{% extends "accounts/base.html" %}
+{% block title %}Application Detail{% endblock %}
+
+{% block content %}
+<h1 class="mb-4"><i class="bi bi-file-earmark-text"></i> Application Details</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title"><i class="bi bi-person"></i> Applicant: {{ application.user.username }}</h5>
+        <p><strong><i class="bi bi-briefcase"></i> Job Applied:</strong> {{ application.job.job_title }}</p>
+        <p><strong><i class="bi bi-envelope"></i> Email:</strong> {{ application.email }}</p>
+        <p><strong><i class="bi bi-calendar"></i> Date Applied:</strong> {{ application.applied_at|date:"M d, Y H:i" }}</p>
+        <hr>
+        <h6><i class="bi bi-file-text"></i> Cover Letter</h6>
+        <p>{{ application.cover_letter|linebreaks }}</p>
+        <h6><i class="bi bi-file-earmark-pdf"></i> Resume</h6>
+        {% if application.resume %}
+            <a href="{{ application.resume.url }}" target="_blank" class="btn btn-sm btn-primary">
+                <i class="bi bi-file-earmark-arrow-down"></i> Download Resume
+            </a>
+        {% else %}
+            <p class="text-muted">No resume uploaded.</p>
+        {% endif %}
+    </div>
+</div>
+
+<a href="{% url 'accounts:admin_dashboard' %}" class="btn btn-secondary">
+    <i class="bi bi-arrow-left"></i> Back to Dashboard
+</a>
+{% endblock %}
