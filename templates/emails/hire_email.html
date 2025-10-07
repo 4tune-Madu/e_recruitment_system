@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+    .container { background: #fff; padding: 20px; border-radius: 10px; }
+    h2 { color: #1597BB; }
+    p { color: #333; }
+    .footer { margin-top: 20px; font-size: 12px; color: #777; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Congratulations {{ user.first_name }} 🎉</h2>
+    <p>
+      We are pleased to inform you that you have been <strong>hired</strong> for the role of 
+      <b>{{ job.job_title }}</b> at <b>{{ job.institution }}</b>.
+    </p>
+    <p>
+      Our team will be in touch with further details very soon. 
+      Welcome aboard!
+    </p>
+    <div class="footer">
+      <p>Best regards,<br>Recruitment Team</p>
+    </div>
+  </div>
+</body>
+</html>

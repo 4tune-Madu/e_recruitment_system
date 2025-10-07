@@ -4,40 +4,54 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="col-md-5">
-        <div class="card shadow-lg border-0 rounded-3">
-            <div class="card-body p-4">
-                <h3 class="text-center mb-4 fw-bold text-primary">Welcome Back</h3>
+<div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
+  <div class="w-full max-w-md">
+    <div class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-8 transform transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl">
+      
+      <!-- Title -->
+      <h2 class="text-3xl font-extrabold text-center mb-6 text-gray-900 dark:text-gray-100 animate-fadeInUp">
+        Welcome Back
+      </h2>
 
-                <form method="post" novalidate>
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">{{ field.label }}</label>
-                            {{ field|add_class:"form-control" }}
-                            {% if field.errors %}
-                                <div class="text-danger small mt-1">
-                                    {{ field.errors|join:", " }}
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+      <!-- Form -->
+      <form method="post" novalidate class="space-y-5">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="animate-fadeInUp">
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
+              {{ field.label }}
+            </label>
+            {{ field|add_class:"w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-gray-100 transition-all duration-300" }}
+            
+            {% if field.errors %}
+              <div class="text-red-500 text-xs mt-1">
+                {{ field.errors|join:", " }}
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
 
-                    <button type="submit" class="btn btn-primary w-100 py-2">Login</button>
-                </form>
+        <button type="submit" 
+          class="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl shadow-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-400 transform hover:-translate-y-0.5 transition-all duration-300">
+          Login
+        </button>
+      </form>
 
-                <!-- Extra links -->
-                <div class="text-center mt-3">
-                    <p class="mb-1">
-                        Don't have an account? <a href="{% url 'signup' %}" class="text-decoration-none">Sign Up</a>
-                    </p>
-                    <p class="small">
-                        <a href="#" class="text-muted text-decoration-none">Forgot Password?</a>
-                    </p>
-                </div>
-            </div>
-        </div>
+      <!-- Extra links -->
+      <div class="text-center mt-6 space-y-2">
+        <p class="text-gray-600 dark:text-gray-400">
+          Don't have an account?
+          <a href="{% url 'signup' %}" class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline transition">
+            Sign Up
+          </a>
+        </p>
+        <p>
+          <a href="#" class="text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-500 transition">
+            Forgot Password?
+          </a>
+        </p>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}

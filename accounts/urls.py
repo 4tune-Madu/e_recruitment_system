@@ -31,4 +31,8 @@ urlpatterns = [
     # URL for deleting applications
     path(
     "dashboard/admin/applications/<int:app_id>/delete/", views.delete_application, name="delete_application"),
+
+    # URL for hire/ reject
+path("applications/<int:app_id>/hire/", views.hire_applicant, name="hire_applicant"),
+path("applications/<int:app_id>/reject/", views.reject_applicant, name="reject_applicant"),    
 ]

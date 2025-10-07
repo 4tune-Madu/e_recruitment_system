@@ -32,32 +32,36 @@ from django.conf import settings
 from django.db import models
 
 class JobApplication(models.Model):
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Hired', 'Hired'),
+        ('Rejected', 'Rejected'),
+    ]
+
     job = models.ForeignKey(
-        'JobListing', 
-        on_delete=models.CASCADE, 
+        'JobListing',
+        on_delete=models.CASCADE,
         related_name='applications'
-    )  # Link each application to a specific job listing
+    )
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        null=True,      # Optional for guest applicants
-        blank=True,     # Optional in forms
+        null=True,
+        blank=True,
         related_name='job_applications'
-    )  # Link to registered user (optional)
-
-    name = models.CharField(max_length=100)  # Applicant's name
-    email = models.EmailField()              # Applicant's email
-    cover_letter = models.TextField()        # Cover letter
-    resume = models.FileField(upload_to='resumes/')  # Resume file
-    applied_at = models.DateTimeField(auto_now_add=True)  # Date applied
-
-    # Field to store generated PDF
-    pdf_file = models.FileField(
-        upload_to="applications_pdfs/", 
-        null=True, 
-        blank=True
     )
+
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    cover_letter = models.TextField()
+    resume = models.FileField(upload_to='resumes/')
+    applied_at = models.DateTimeField(auto_now_add=True)
+
+    # New status field with choices & default
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
+
+    pdf_file = models.FileField(upload_to="applications_pdfs/", null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} - {self.job.job_title}"

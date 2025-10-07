@@ -21,6 +21,6 @@ class RoleBasedRedirectMiddleware:
 
             # If admin tries to access user dashboard
             if request.user.is_staff and path.startswith("/accounts/dashboard/user/"):
-                return redirect(reverse("admin_dashboard"))
+                return redirect(reverse("accounts:admin_dashboard"))
 
         return self.get_response(request)

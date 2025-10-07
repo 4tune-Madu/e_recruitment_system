@@ -2,29 +2,69 @@
 {% block title %}Application Detail{% endblock %}
 
 {% block content %}
-<h1 class="mb-4"><i class="bi bi-file-earmark-text"></i> Application Details</h1>
+<h1 class="mb-4"><i class="bi bi-file-earmark-text"></i> Application Detail</h1>
 
-<div class="card shadow-sm mb-4">
+<div class="card shadow-sm mb-3">
     <div class="card-body">
-        <h5 class="card-title"><i class="bi bi-person"></i> Applicant: {{ application.user.username }}</h5>
-        <p><strong><i class="bi bi-briefcase"></i> Job Applied:</strong> {{ application.job.job_title }}</p>
-        <p><strong><i class="bi bi-envelope"></i> Email:</strong> {{ application.email }}</p>
-        <p><strong><i class="bi bi-calendar"></i> Date Applied:</strong> {{ application.applied_at|date:"M d, Y H:i" }}</p>
+        <h5 class="card-title">
+            <i class="bi bi-briefcase"></i> Job: 
+            <span class="badge bg-success">{{ application.job.job_title }}</span>
+        </h5>
+        <p><i class="bi bi-person-circle"></i> <strong>Applicant:</strong> {{ application.user.username }} 
+           (<a href="mailto:{{ application.user.email }}">{{ application.user.email }}</a>)</p>
+        <p><i class="bi bi-calendar-event"></i> <strong>Applied on:</strong> {{ application.applied_at|date:"M d, Y H:i" }}</p>
         <hr>
-        <h6><i class="bi bi-file-text"></i> Cover Letter</h6>
-        <p>{{ application.cover_letter|linebreaks }}</p>
-        <h6><i class="bi bi-file-earmark-pdf"></i> Resume</h6>
+        <p><i class="bi bi-chat-left-text"></i> <strong>Cover Letter / Description:</strong></p>
+        <p class="ms-3">{{ application.cover_letter }}</p>
+
         {% if application.resume %}
-            <a href="{{ application.resume.url }}" target="_blank" class="btn btn-sm btn-primary">
-                <i class="bi bi-file-earmark-arrow-down"></i> Download Resume
-            </a>
-        {% else %}
-            <p class="text-muted">No resume uploaded.</p>
+            <hr>
+            <p><i class="bi bi-file-earmark-arrow-down"></i> <strong>Resume:</strong> 
+                <a href="{{ application.resume.url }}" class="btn btn-primary btn-sm" download>
+                    <i class="bi bi-download"></i> Download Resume
+                </a>
+            </p>
         {% endif %}
+
+        <hr>
+        <p><strong>Status:</strong> 
+            <span class="badge 
+                {% if application.status == 'Hired' %}bg-success
+                {% elif application.status == 'Rejected' %}bg-danger
+                {% else %}bg-secondary
+                {% endif %}">
+                {{ application.status }}
+            </span>
+        </p>
+
+        <!-- Action Buttons -->
+       <hr>
+<div class="mt-3">
+    {% if application.status == "Pending" %}
+  <div class="d-flex gap-2 mt-3">
+      <a href="{% url 'accounts:hire_applicant' application.id %}" class="btn btn-success">
+          <i class="bi bi-check-circle"></i> Hire
+      </a>
+      <a href="{% url 'accounts:reject_applicant' application.id %}" class="btn btn-danger">
+          <i class="bi bi-x-circle"></i> Reject
+      </a>
+  </div>
+{% elif application.status == "Hired" %}
+  <div class="alert alert-success mt-3">
+      ✅ This applicant has been hired.
+  </div>
+{% elif application.status == "Rejected" %}
+  <div class="alert alert-danger mt-3">
+      ❌ This applicant has been rejected.
+  </div>
+{% endif %}
+
+</div>
+
     </div>
 </div>
 
-<a href="{% url 'accounts:admin_dashboard' %}" class="btn btn-secondary">
-    <i class="bi bi-arrow-left"></i> Back to Dashboard
+<a href="{% url 'accounts:admin_applications' %}" class="btn btn-secondary mt-3">
+    <i class="bi bi-arrow-left"></i> Back to Applications
 </a>
 {% endblock %}
