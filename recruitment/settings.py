@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,10 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1&=gwa2obpato3zf^ks*k-*-dz)tvw*2o^$ut3!)26w$guc5qe'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
 # Application definition
 
@@ -53,6 +51,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 
     # Custom Middleware 
     'accounts.middleware.RoleBasedRedirectMiddleware',
@@ -162,3 +163,32 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "madukafortune5@gmail.com"
 EMAIL_HOST_PASSWORD = "njtg ejor lxgf xouy"
 DEFAULT_FROM_EMAIL = "no-reply@recruitmenthub.com"
+
+
+
+# For deployment
+
+import os
+import dj_database_url
+from pathlib import Path
+
+DEBUG = False
+
+ALLOWED_HOSTS = ["*"]
+
+# Static files (CSS, JS, Images)
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+
+# WhiteNoise for static files
+MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+
+# PostgreSQL from Railway
+DATABASES = {
+    'default': dj_database_url.config(default='sqlite:///db.sqlite3')
+}
