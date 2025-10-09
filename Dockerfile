@@ -1,20 +1,19 @@
-# Use an official slim Python image
-FROM python:3.11-slim
+# Use official Python image
+FROM python:3.11-slim-bullseye
 
-# Prevent Python from writing pyc files and use unbuffered logs
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+# Prevent Python from writing pyc files
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# Install system dependencies required for WeasyPrint
+# Install system dependencies for WeasyPrint
 RUN apt-get update && apt-get install -y \
     build-essential \
-    libglib2.0-0 \
     libpango-1.0-0 \
-    libpangocairo-1.0-0 \
     libcairo2 \
-    libgdk-pixbuf2.0-0 \
+    libgdk-pixbuf-2.0-0 \
     libffi-dev \
     shared-mime-info \
+    fonts-liberation \
     libjpeg-dev \
     zlib1g-dev \
     libxml2 \
@@ -23,23 +22,21 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
+# Create working directory
 WORKDIR /app
 
-# Copy requirements first for caching
+# Copy and install dependencies
 COPY requirements.txt /app/
-
-# Install Python dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copy project files
 COPY . /app/
 
-# Collect static files
+# Collect static files (ignore errors)
 RUN python manage.py collectstatic --noinput || true
 
 # Expose port 8000
 EXPOSE 8000
 
-# Run with Gunicorn
+# Run app with Gunicorn
 CMD ["gunicorn", "recruitment.wsgi:application", "--bind", "0.0.0.0:8000"]
