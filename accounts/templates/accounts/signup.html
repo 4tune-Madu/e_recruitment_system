@@ -1,45 +1,139 @@
-{% extends 'base.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - e-Recruitment</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #7B113A, #1597BB);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .signup-header {
+            color: #fff;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+        }
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+            animation: fadeInUp 1s ease-out;
+        }
+        .card h3 {
+            color: #7B113A;
+            font-weight: 700;
+        }
+        .form-label {
+            color: #150E56;
+            font-weight: 600;
+        }
+        .btn-signup {
+            background: linear-gradient(45deg, #1597BB, #7B113A);
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        .btn-signup:hover {
+            background: linear-gradient(45deg, #7B113A, #150E56);
+            transform: scale(1.05);
+        }
+        .extra-links a {
+            color: #1597BB;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .extra-links a:hover {
+            color: #7B113A;
+        }
+        .valid { color: green; font-weight: 600; }
+        .invalid { color: red; font-weight: 400; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
 {% load widget_tweaks %}
+{% load static %}
 
-{% block title %}Sign Up{% endblock %}
+<div class="container">
+    <div class="col-md-6 col-lg-4 mx-auto">
 
-{% block content %}
-<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-    <div class="card shadow-lg border-0 rounded-4 p-5 bg-white" style="max-width: 500px; width: 100%;">
-        <h2 class="text-center mb-4">Create an Account</h2>
-        <form method="POST">
-            {% csrf_token %}
-            {% for field in form %}
+        <!-- HEADER -->
+        <h1 class="signup-header">SIGN UP</h1>
+
+        <!-- CARD -->
+        <div class="card p-4">
+            <h3 class="text-center mb-4">Create Your Account</h3>
+
+            <!-- Flash Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- SIGNUP FORM -->
+            <form method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label">{{ field.label }}</label>
+                        {{ field|add_class:"form-control shadow-sm" }}
+                        {% if field.errors %}
+                            <div class="text-danger small mt-1">{{ field.errors|join:", " }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <!-- Password Rules -->
                 <div class="mb-3">
-                    <label class="form-label">{{ field.label }}</label>
-                    {{ field|add_class:"form-control" }}
-                    {% if field.errors %}
-                        <div class="text-danger small">{{ field.errors|join:", " }}</div>
-                    {% endif %}
+                    <p class="fw-bold">Password must contain:</p>
+                    <ul class="list-unstyled">
+                        <li id="length" class="invalid">At least 8 characters</li>
+                        <li id="uppercase" class="invalid">An uppercase letter</li>
+                        <li id="lowercase" class="invalid">A lowercase letter</li>
+                        <li id="number" class="invalid">A number</li>
+                        <li id="special" class="invalid">A special character (!@#$%^&*)</li>
+                    </ul>
                 </div>
-            {% endfor %}
 
-            <div class="mb-3">
-                <p class="fw-bold">Password must contain:</p>
-                <ul>
-                    <li id="length" class="invalid">At least 8 characters</li>
-                    <li id="uppercase" class="invalid">An uppercase letter</li>
-                    <li id="lowercase" class="invalid">A lowercase letter</li>
-                    <li id="number" class="invalid">A number</li>
-                    <li id="special" class="invalid">A special character (!@#$%^&*)</li>
-                </ul>
+                <button type="submit" class="btn btn-signup w-100 py-2">Sign Up</button>
+            </form>
+
+            <!-- Extra Links -->
+            <div class="extra-links text-center mt-4">
+                <p class="mb-0">Already have an account?
+                    <a href="{% url 'accounts:login' %}">Login</a>
+                </p>
             </div>
-
-            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
-        </form>
-        <p class="mt-3 text-center">Already have an account? <a href="{% url 'accounts:login' %}">Login</a></p>
+        </div>
     </div>
 </div>
 
+<!-- Password validation JS -->
 <script>
 const passwordInput = document.getElementById("id_password1");
-if(passwordInput){
+if (passwordInput) {
     passwordInput.addEventListener("keyup", function() {
         const value = passwordInput.value;
         document.getElementById("length").className = value.length >= 8 ? "valid" : "invalid";
@@ -50,4 +144,8 @@ if(passwordInput){
     });
 }
 </script>
-{% endblock %}
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
