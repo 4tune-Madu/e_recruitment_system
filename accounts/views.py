@@ -26,24 +26,32 @@ from django.contrib.auth import login
 from django.contrib import messages
 from .forms import EmailAuthenticationForm
 
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib import messages
+from django.views.decorators.csrf import csrf_protect
+from .forms import EmailAuthenticationForm
+
+@csrf_protect
 def login_view(request):
     if request.method == "POST":
-        form = EmailAuthenticationForm(request.POST, request=request)  # pass request
+        form = EmailAuthenticationForm(request.POST, request=request)
         if form.is_valid():
-            user = form.cleaned_data['user']
-            login(request, user)
-
-            # Redirect based on user role
-            if user.role == 'admin':
-                return redirect('accounts:admin_dashboard')
-            else:  # For both employer and job seeker
-                return redirect('accounts:user_dashboard')
+            user = form.cleaned_data.get("user")
+            if user is not None:
+                login(request, user)
+                if user.role == 'admin':
+                    return redirect('accounts:admin_dashboard')
+                else:
+                    return redirect('accounts:user_dashboard')
+            else:
+                messages.error(request, "Invalid credentials. Please try again.")
         else:
             messages.error(request, "Invalid email or password.")
     else:
-        form = EmailAuthenticationForm(request=request)  # pass request
+        form = EmailAuthenticationForm(request=request)
 
-    return render(request, 'accounts/login.html', {'form': form})
+    return render(request, "accounts/login.html", {"form": form})
 
 # User Dashboard
 @login_required
