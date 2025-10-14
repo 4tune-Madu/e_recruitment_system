@@ -6,7 +6,7 @@ DEBUG = False
 ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://erecruitmentsystem-production-db39.up.railway.app/https://erecruitmentsystem-production-db39.up.railway.app/"
+    "https://erecruitmentsystem-production-db39.up.railway.app"
 ]
 
 # ✅ Correct way to pull database from Railway environment variable
