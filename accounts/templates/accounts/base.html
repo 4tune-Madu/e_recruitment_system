@@ -2,24 +2,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <meta charset="UTF-8">
     <title>{% block title %}Dashboard{% endblock %}</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Optional custom CSS -->
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
     <style>
-        body { padding-top: 60px; }
-        .navbar-brand { font-weight: bold; }
-        .sidebar { min-height: 100vh; background-color: #f8f9fa; padding-top: 1rem; }
-        .content { padding: 2rem; }
+        /* Base Theme */
+        body {
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-family: 'Inter', sans-serif;
+            padding-top: 60px;
+            transition: background 0.4s ease-in-out;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #1e293b !important;
+            transition: background 0.4s ease;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            color: #06b6d4 !important;
+            letter-spacing: 0.5px;
+        }
+        .navbar-nav .nav-link {
+            color: #e2e8f0 !important;
+            transition: color 0.3s ease;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #06b6d4 !important;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            min-height: 100vh;
+            background-color: #334155;
+            padding-top: 1rem;
+            color: #e2e8f0;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.05);
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            margin: 0.2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #475569;
+            color: #06b6d4;
+            transform: translateX(3px);
+        }
+
+        /* Content */
+        .content {
+            padding: 2rem;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Cards */
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+        }
+
+        /* Buttons */
+        .btn-primary, .btn-success, .btn-info {
+            background-color: #06b6d4;
+            border: none;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        .btn-primary:hover, .btn-success:hover, .btn-info:hover {
+            background-color: #0891b2;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
+
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'accounts:login' %}">e-Recruitment</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -56,7 +146,6 @@
         <div class="row">
             <div class="col-md-2 sidebar">
                 {% block sidebar %}
-                <!-- Optional sidebar content -->
                 {% endblock %}
             </div>
             <div class="col-md-10 content">
