@@ -45,3 +45,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # ✅ Ensure WhiteNoise works correctly
 MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+
+
+
+
+
+
+#Temporary redeoploy test
