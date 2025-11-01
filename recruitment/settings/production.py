@@ -3,7 +3,7 @@ import dj_database_url
 import os
 
 DEBUG = False
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["erecruitmentsystem-production-db39.up.railway.app/", "localhost", "127.0.0.1"]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://erecruitmentsystem-production-db39.up.railway.app"
