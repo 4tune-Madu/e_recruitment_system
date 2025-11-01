@@ -1,6 +1,7 @@
 from .base import *
 import dj_database_url
 import os
+from pathlib import Path
 
 DEBUG = False
 ALLOWED_HOSTS = [
@@ -36,6 +37,7 @@ DEFAULT_FROM_EMAIL = "no-reply@recruitmenthub.com"
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # ✅ Media files
 MEDIA_URL = '/media/'
