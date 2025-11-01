@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+  body {
+    background-color: #f7f9fb;
+  }
+
+  .applications-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 15px;
+  }
+
+  .application-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    border-left: 6px solid transparent;
+  }
+
+  .application-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  .application-card.pending {
+    border-left-color: #ffc107;
+  }
+
+  .application-card.hired {
+    border-left-color: #28a745;
+  }
+
+  .application-card.rejected {
+    border-left-color: #dc3545;
+  }
+
+  .application-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .job-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .status {
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    text-transform: capitalize;
+    color: #fff;
+  }
+
+  .status.pending {
+    background-color: #ffc107;
+    color: #000;
+  }
+
+  .status.hired {
+    background-color: #28a745;
+  }
+
+  .status.rejected {
+    background-color: #dc3545;
+  }
+
+  .application-meta {
+    font-size: 0.95rem;
+    color: #555;
+    margin-top: 10px;
+  }
+
+  .application-actions {
+    margin-top: 15px;
+  }
+
+  .btn-outline-primary {
+    border-radius: 8px;
+    padding: 6px 14px;
+  }
+
+  @media (max-width: 576px) {
+    .application-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .job-title {
+      font-size: 1.1rem;
+    }
+  }
+</style>
+
+<div class="applications-container">
+  <h2 class="text-center mb-4 fw-bold text-primary">My Job Applications</h2>
+
+  {% if applications %}
+    {% for app in applications %}
+      <div class="application-card {{ app.status|lower }}">
+        <div class="application-header">
+          <div class="job-title">{{ app.job.job_title }}</div>
+          <div class="status {{ app.status|lower }}">{{ app.status }}</div>
+        </div>
+
+        <div class="application-meta">
+          <p><strong>Applied on:</strong> {{ app.applied_at|date:"F j, Y, g:i a" }}</p>
+          <p><strong>Cover Letter:</strong> {{ app.cover_letter|truncatechars:150 }}</p>
+        </div>
+
+        <div class="application-actions">
+          {% if app.resume %}
+            <a href="{{ app.resume.url }}" class="btn btn-outline-primary btn-sm" target="_blank">View Resume</a>
+          {% endif %}
+          {% if app.pdf_file %}
+            <a href="{{ app.pdf_file.url }}" class="btn btn-outline-secondary btn-sm" target="_blank">View PDF</a>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="text-center mt-5">
+      <img src="{% static 'images/empty_state.svg' %}" alt="No Applications" width="150" class="mb-3">
+      <p class="text-muted">You haven’t submitted any job applications yet.</p>
+      <a href="{% url 'jobboard:job_list' %}" class="btn btn-primary mt-2">Browse Jobs</a>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

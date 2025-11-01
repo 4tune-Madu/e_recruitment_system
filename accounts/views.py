@@ -244,3 +244,60 @@ def reject_applicant(request, app_id):
         messages.warning(request, f"{application.name} rejected, but no email available.")
 
     return redirect("accounts:application_detail", app_id=app_id)
+
+
+
+# accounts/views.py
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import ProfileForm
+
+@login_required
+def profile_view(request):
+    user = request.user
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your profile has been updated successfully!")
+            return redirect('accounts:profile')
+    else:
+        form = ProfileForm(instance=user)
+    return render(request, 'accounts/profile.html', {'form': form})
+
+
+
+# Profile dashboard
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from jobboard.models import JobListing  # if you have Job model
+from jobboard.models import JobApplication # if you have job applications
+
+@login_required
+def profile_dashboard(request):
+    user = request.user
+
+    # Example metrics (adjust according to your app)
+    jobs_posted = Job.objects.filter(posted_by=user).count() if user.is_employer() else 0
+    applications = JobApplication.objects.filter(user=user).count() if user.is_job_seeker() else 0
+    saved_jobs = getattr(user, "saved_jobs", []).count() if hasattr(user, "saved_jobs") else 0
+
+    context = {
+        "user": user,
+        "jobs_posted": jobs_posted,
+        "applications": applications,
+        "saved_jobs": saved_jobs,
+    }
+    return render(request, "accounts/profile_dashboard.html", context)
+
+
+# accounts/views.py
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from jobboard.models import JobApplication  # import from jobboard
+
+@login_required
+def my_applications(request):
+    applications = JobApplication.objects.filter(user=request.user).select_related('job').order_by('-applied_at')
+    return render(request, 'accounts/my_applications.html', {'applications': applications})

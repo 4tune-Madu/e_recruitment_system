@@ -5,6 +5,7 @@ from .models import User
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
+        
         model = User
         fields = ('username', 'email', 'role', 'password1', 'password2')
 
@@ -33,3 +34,20 @@ class EmailAuthenticationForm(forms.Form):
             cleaned_data['user'] = user
 
         return cleaned_data
+
+
+# accounts/forms.py form for profie
+from django import forms
+from .models import User
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'phone', 'bio', 'profile_picture']
+        widgets = {
+            'bio': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+        }

@@ -28,6 +28,7 @@ class JobListing(models.Model):
 
 #Model for job applications
 #This is for the job application form
+# jobboard/models.py
 from django.conf import settings
 from django.db import models
 
@@ -57,11 +58,8 @@ class JobApplication(models.Model):
     cover_letter = models.TextField()
     resume = models.FileField(upload_to='resumes/')
     applied_at = models.DateTimeField(auto_now_add=True)
-
-    # New status field with choices & default
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
-
     pdf_file = models.FileField(upload_to="applications_pdfs/", null=True, blank=True)
 
-    def __str__(self):
+    def _str_(self):
         return f"{self.name} - {self.job.job_title}"

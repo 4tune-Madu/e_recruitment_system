@@ -12,7 +12,7 @@
             <div class="card-body">
                 <h5 class="card-title">My Profile</h5>
                 <p class="card-text">View or update your profile information.</p>
-                <a href="#" class="btn btn-primary">Go</a>
+                <a href="{% url 'accounts:dashboard' %}" class="btn btn-primary">Go</a>
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
             <div class="card-body">
                 <h5 class="card-title">My Applications</h5>
                 <p class="card-text">Check the status of your job applications.</p>
-                <a href="#" class="btn btn-primary">Go</a>
+                <a href="{% url 'accounts:view_applications' %}" class="btn btn-primary">Go</a>
             </div>
         </div>
     </div>

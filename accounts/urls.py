@@ -33,6 +33,13 @@ urlpatterns = [
     "dashboard/admin/applications/<int:app_id>/delete/", views.delete_application, name="delete_application"),
 
     # URL for hire/ reject
-path("applications/<int:app_id>/hire/", views.hire_applicant, name="hire_applicant"),
-path("applications/<int:app_id>/reject/", views.reject_applicant, name="reject_applicant"),    
+    path("applications/<int:app_id>/hire/", views.hire_applicant, name="hire_applicant"),
+    path("applications/<int:app_id>/reject/", views.reject_applicant, name="reject_applicant"),
+
+    #User profile form & dashboard
+    path("profile/", views.profile_view, name="profile"),   
+    path("dashboard/", views.profile_dashboard, name="dashboard"),
+
+    # view application
+    path("applications/view/", views.my_applications, name="view_applications"),
 ]

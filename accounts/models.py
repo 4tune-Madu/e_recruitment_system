@@ -1,5 +1,7 @@
+# accounts/models.py
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+
 
 class User(AbstractUser):
     ROLE_CHOICES = (
@@ -8,11 +10,15 @@ class User(AbstractUser):
         ('admin', 'Admin'),
     )
 
-    email = models.EmailField(unique=True)  # Ensure unique emails
+    email = models.EmailField(unique=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='job_seeker')
 
-    USERNAME_FIELD = 'email'  # Use email to log in
-    REQUIRED_FIELDS = ['username']  # username still required for superuser creation
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     def is_employer(self):
         return self.role == 'employer'
@@ -24,14 +30,17 @@ class User(AbstractUser):
         return self.role == 'admin'
 
     def save(self, *args, **kwargs):
-        # Save email in lowercase for case-insensitive login
-        self.email = self.email.lower()
+        # Ensure email is always lowercase
+        if self.email:
+            self.email = self.email.lower()
         super().save(*args, **kwargs)
 
-
+    def _str_(self):
+        return self.email or self.username
 
 
 # Apllication model for hired rejected nd pendding
+"""
 from django.conf import settings
 from django.db import models
 
@@ -51,3 +60,4 @@ class JobApplication(models.Model):
         return f"{self.user} - {self.job}"
 
 
+"""
