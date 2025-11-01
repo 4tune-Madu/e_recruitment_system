@@ -48,7 +48,10 @@ MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
 
 
 
+# redeoploy check
 
 
 
-#Temporary redeoploy test
+
+
+#testing redeployment
