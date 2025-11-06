@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -123,27 +124,36 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold" href="{% url 'jobboard:home' %}">University e-Recruitment</a>
-            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'jobboard:home' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'jobboard:job_list' %}">Academic Positions</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">My Applications</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
-                    {% if user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a></li>
-                    {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:signup' %}">Sign Up</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+    <div class="container-fluid">
+        <!-- Logo + Brand -->
+        <a class="navbar-brand d-flex align-items-center fw-bold" href="{% url 'jobboard:home' %}">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" 
+                 style="height: 45px; width: auto; margin-right: 10px; border-radius: 8px;">
+            University e-Recruitment
+        </a>
+
+        <!-- Navbar toggler for mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="{% url 'jobboard:home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'jobboard:job_list' %}">Academic Positions</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">My Applications</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'accounts:signup' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <!-- Hero Section -->
     <section class="hero-section" data-aos="fade-up">

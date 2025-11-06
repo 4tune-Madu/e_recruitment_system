@@ -104,6 +104,14 @@
             background-color: #0891b2;
             transform: translateY(-2px);
         }
+        /*lOGO IMAGE*/
+        .navbar-brand img {
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        .navbar-brand img:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -111,7 +119,10 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'accounts:login' %}">e-Recruitment</a>
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'accounts:login' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" width="35" height="35" class="me-2 rounded-circle">
+                    e-Recruitment
+                </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
