@@ -1,30 +1,35 @@
 from .base import *
-import dj_database_url
 import os
 from pathlib import Path
 
 DEBUG = False
+
+# ✅ Use your PythonAnywhere domain
 ALLOWED_HOSTS = [
-    "erecruitmentsystem-production-db39.up.railway.app",
-    "0.0.0.0",
-    "localhost",
-    "127.0.0.1",
+    "fortunemaduka.pythonanywhere.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://erecruitmentsystem-production-db39.up.railway.app"
+    "https://fortunemaduka.pythonanywhere.com",
 ]
 
-# ✅ Correct way to pull database from Railway environment variable
+# ============================================
+# ✅ DATABASE CONFIG (SQLite for free accounts)
+# ============================================
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv("DATABASE_URL"), 
-        conn_max_age=600,
-        ssl_require=True
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
-# ✅ Email setup — use environment vars for safety
+# If you want external PostgreSQL later, I can configure that too.
+
+# ============================================
+# ✅ EMAIL SETTINGS (still ok)
+# ============================================
+
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
@@ -33,25 +38,26 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "madukafortune5@gmail.com")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = "no-reply@recruitmenthub.com"
 
-# ✅ Static files setup (for Railway)
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+# ============================================
+# ✅ STATIC FILES FOR PYTHONANYWHERE
+# ============================================
+
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "static"     # PythonAnywhere REQUIRES this
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATICFILES_DIRS = [BASE_DIR / "static"]
 
-# ✅ Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# ❌ Delete STATICFILES_DIRS – causes errors on PythonAnywhere
+# STATICFILES_DIRS = [BASE_DIR / "static"]
 
-# ✅ Ensure WhiteNoise works correctly
+# ============================================
+# ✅ MEDIA FILES
+# ============================================
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+# ============================================
+# ✅ WHITENOISE MIDDLEWARE
+# ============================================
+
 MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
-
-
-
-# redeoploy check
-
-
-
-
-
-#testing redeployment
