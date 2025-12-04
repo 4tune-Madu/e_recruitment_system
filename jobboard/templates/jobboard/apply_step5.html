@@ -1,0 +1,60 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+
+<h2 class="mb-4">Step 5 — Referees Information</h2>
+
+<form method="POST" id="refereesForm">
+    {% csrf_token %}
+    {{ formset.management_form }}
+
+    <div id="refereesContainer">
+        {% for form in formset %}
+        <div class="referee-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <strong>Referee {{ forloop.counter }}</strong>
+            </div>
+
+            <div class="mb-2">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+            </div>
+
+            <div class="mb-2">
+                {{ form.address.label_tag }}
+                {{ form.address }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="button-row mt-4">
+        <a href="?back=1" class="btn btn-secondary">← Back</a>
+        <button type="submit" class="btn btn-primary">Continue →</button>
+    </div>
+</form>
+
+<style>
+.referee-card {
+    background: #f8f9fa;
+    padding: 18px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.08);
+    margin-bottom: 14px;
+}
+.referee-card input, .referee-card textarea {
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    width: 100%;
+    font-size: 0.95rem;
+}
+.referee-card textarea {
+    resize: vertical;
+}
+.button-row {
+    display: flex;
+    justify-content: space-between;
+}
+</style>
+
+{% endblock %}

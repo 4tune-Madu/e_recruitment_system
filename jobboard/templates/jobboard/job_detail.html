@@ -13,6 +13,7 @@
     <p><strong>Description:</strong> {{ job.job_description }}</p>
     <p><strong>Date Posted:</strong> {{ job.date_posted }}</p>
     <p><strong>University:</strong> {{ job.university }}</p>
+    <a class="btn btn-primary" href="{% url 'jobboard:apply_step1' job.id %}">Apply Now</a>
     <a href="{% url 'job_list' %}">← Back to job listings</a>
 </body>
 </html>

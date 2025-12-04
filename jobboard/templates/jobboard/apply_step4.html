@@ -1,0 +1,123 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+
+<h2 class="mb-4">Step 4 — Academic & Professional Qualifications</h2>
+
+<form method="POST" id="qualForm">
+    {% csrf_token %}
+    {{ formset.management_form }}
+
+    <div id="qualContainer">
+        {% for form in formset %}
+        <div class="qual-card mb-3 p-3 rounded shadow-sm">
+
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <strong>Qualification {{ forloop.counter }}</strong>
+                <button type="button" class="btn btn-danger btn-sm remove-btn">Remove</button>
+            </div>
+
+            <div class="mb-2">
+                {{ form.institution_name.label_tag }}
+                {{ form.institution_name }}
+            </div>
+
+            <div class="mb-2">
+                {{ form.degree.label_tag }}
+                {{ form.degree }}
+            </div>
+
+            <div class="mb-2">
+                {{ form.field_of_study.label_tag }}
+                {{ form.field_of_study }}
+            </div>
+
+            <div class="mb-2">
+                {{ form.graduation_year.label_tag }}
+                {{ form.graduation_year }}
+            </div>
+
+            <!-- Hidden DELETE field -->
+            {{ form.DELETE }}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Add More -->
+    <button type="button" class="btn btn-secondary" id="addQualification">
+        + Add Qualification
+    </button>
+
+    <br><br>
+
+    <button type="submit" class="btn btn-primary">Continue →</button>
+    <a href="?back=1" class="btn btn-outline-secondary">← Back</a>
+</form>
+
+<style>
+    .qual-card {
+        background: #f8f9fa;
+        border-left: 6px solid #0d6efd;
+    }
+</style>
+
+<script>
+// ------------------------
+// Handle Add Qualification
+// ------------------------
+document.getElementById("addQualification").addEventListener("click", () => {
+    let container = document.getElementById("qualContainer");
+    let totalForms = document.getElementById("id_form-TOTAL_FORMS");
+
+    let newIndex = parseInt(totalForms.value);
+
+    // Clone template from the last form
+    let emptyForm = `
+        <div class="qual-card mb-3 p-3 rounded shadow-sm">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <strong>Qualification ${newIndex + 1}</strong>
+                <button type="button" class="btn btn-danger btn-sm remove-btn">Remove</button>
+            </div>
+
+            <div class="mb-2">
+                <label for="id_form-${newIndex}-institution_name">Institution name:</label>
+                <input type="text" name="form-${newIndex}-institution_name" class="form-control" id="id_form-${newIndex}-institution_name" />
+            </div>
+
+            <div class="mb-2">
+                <label for="id_form-${newIndex}-degree">Degree:</label>
+                <input type="text" name="form-${newIndex}-degree" class="form-control" id="id_form-${newIndex}-degree" />
+            </div>
+
+            <div class="mb-2">
+                <label for="id_form-${newIndex}-field_of_study">Field of study:</label>
+                <input type="text" name="form-${newIndex}-field_of_study" class="form-control" id="id_form-${newIndex}-field_of_study" />
+            </div>
+
+            <div class="mb-2">
+                <label for="id_form-${newIndex}-graduation_year">Graduation year:</label>
+                <input type="number" name="form-${newIndex}-graduation_year" class="form-control" id="id_form-${newIndex}-graduation_year" />
+            </div>
+
+            <input type="checkbox" name="form-${newIndex}-DELETE" id="id_form-${newIndex}-DELETE" hidden>
+        </div>
+    `;
+
+    container.insertAdjacentHTML("beforeend", emptyForm);
+
+    totalForms.value = newIndex + 1;
+});
+
+// ---------------------------
+// Remove qualification button
+// ---------------------------
+document.addEventListener("click", function (e) {
+    if (e.target.classList.contains("remove-btn")) {
+        let card = e.target.closest(".qual-card");
+        let deleteInput = card.querySelector("input[type='checkbox']");
+        deleteInput.checked = true;  // mark for deletion
+        card.style.display = "none"; // hide visually
+    }
+});
+</script>
+
+{% endblock %}

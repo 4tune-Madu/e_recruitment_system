@@ -1,0 +1,98 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+
+<h2 class="mb-4">Step 3 — Education Details</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ formset.management_form }}
+
+    <div id="educationContainer">
+        {% for form in formset %}
+        <div class="edu-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <strong>Education {{ forloop.counter }}</strong>
+                <button type="button" class="remove-edu btn btn-danger btn-sm">Remove</button>
+            </div>
+
+            {{ form.school_name }}
+            {{ form.degree }}
+            {{ form.field }}
+            {{ form.graduation_year }}
+
+            {{ form.DELETE }} <!-- hidden -->
+        </div>
+        {% endfor %}
+    </div>
+
+    <template id="emptyEduTemplate">
+        <div class="edu-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <strong>Education _number_</strong>
+                <button type="button" class="remove-edu btn btn-danger btn-sm">Remove</button>
+            </div>
+
+            {{ formset.empty_form.school_name }}
+            {{ formset.empty_form.degree }}
+            {{ formset.empty_form.field }}
+            {{ formset.empty_form.graduation_year }}
+            {{ formset.empty_form.DELETE }}
+        </div>
+    </template>
+
+    <button type="button" id="addEduBtn" class="btn btn-outline-primary mt-3">+ Add Education</button>
+
+    <div class="mt-4">
+        <a href="?back=1" class="btn btn-secondary">← Back</a>
+        <button type="submit" class="btn btn-primary">Continue →</button>
+    </div>
+</form>
+
+<style>
+.edu-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.edu-card input {
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ced4da;
+    width: 100%;
+    font-size: 14px;
+}
+.remove-edu {
+    cursor: pointer;
+}
+input[type="checkbox"][name$="DELETE"] {
+    display: none; /* hide delete checkbox */
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const addBtn = document.getElementById("addEduBtn");
+    const container = document.getElementById("educationContainer");
+    const totalForms = document.getElementById("id_form-TOTAL_FORMS");
+    const emptyTemplate = document.getElementById("emptyEduTemplate").innerHTML;
+
+    addBtn.onclick = function () {
+        let count = parseInt(totalForms.value);
+        let formHtml = emptyTemplate.replace(/_prefix_/g, count);
+        formHtml = formHtml.replace("_number_", count + 1);
+        container.insertAdjacentHTML("beforeend", formHtml);
+        totalForms.value = count + 1;
+    };
+
+    container.addEventListener("click", function (e) {
+        if (e.target.classList.contains("remove-edu")) {
+            e.target.closest(".edu-card").remove();
+        }
+    });
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "accounts/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container" style="max-width:900px;">
+  <h2 class="mb-4">Step 6 — Cover Letter & Resume(s)</h2>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Cover letter -->
+    <div class="mb-4">
+      <label class="form-label fw-semibold">Cover Letter</label>
+      <textarea name="cover_letter" class="form-control" rows="8"
+                placeholder="Write your cover letter...">{{ existing_cover_letter }}</textarea>
+    </div>
+
+    <!-- Upload resumes -->
+    <div class="mb-3">
+      <label class="form-label fw-semibold">Upload Resume(s)</label>
+      <input type="file" id="resume_input" name="resumes" class="form-control"
+             accept=".pdf,.doc,.docx,.txt" multiple>
+
+      <ul class="list-group mt-2" id="resumes_list">
+        {% for fpath in existing_files %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="{{ MEDIA_URL }}{{ fpath }}" target="_blank">{{ fpath|slice:"8:" }}</a>
+            <button type="submit" name="delete_file" value="{{ forloop.counter0 }}" class="btn btn-sm btn-danger">Remove</button>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <a href="?back=1" class="btn btn-outline-secondary">← Back</a>
+      <button type="submit" class="btn btn-primary">Next → Preview</button>
+    </div>
+  </form>
+</div>
+
+<script>
+const resumeInput = document.getElementById("resume_input");
+const resumesList = document.getElementById("resumes_list");
+
+resumeInput.addEventListener("change", () => {
+    // Show previews for newly selected files
+    Array.from(resumeInput.files).forEach(file => {
+        const li = document.createElement("li");
+        li.className = "list-group-item";
+        li.textContent = file.name;
+        resumesList.appendChild(li);
+    });
+});
+</script>
+
+<style>
+.form-label { font-weight:600; color:#0b2a3b; }
+.list-group-item a { text-decoration:none; color:#0b5f73; }
+</style>
+
+{% endblock %}

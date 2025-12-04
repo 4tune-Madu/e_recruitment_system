@@ -1,0 +1,111 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+
+<h2 class="mb-4">Step 7 — Preview & Submit</h2>
+
+<div class="preview-section">
+
+    <!-- Personal Information -->
+    <h4>Personal Information</h4>
+    <p><strong>Name:</strong> {{ step1_data.name }}</p>
+    <p><strong>Email:</strong> {{ step1_data.email }}</p>
+    <p><strong>Date of Birth:</strong> {{ step1_data.date_of_birth }}</p>
+
+    <!-- Children -->
+    <h4>Children</h4>
+    <ul>
+        {% for child in children_data %}
+            <li>{{ child.child_name }} — Age: {{ child.age }}</li>
+        {% empty %}
+            <li>No children added</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Education -->
+    <h4>Education</h4>
+    <ul>
+        {% for edu in education_data %}
+            <li>{{ edu.school_name }} — {{ edu.degree }} in {{ edu.field }} ({{ edu.graduation_year }})</li>
+        {% empty %}
+            <li>No education added</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Qualifications -->
+    <h4>Qualifications</h4>
+    <ul>
+        {% for qual in qualifications_data %}
+            <li>{{ qual.institution_name }} — {{ qual.degree }} in {{ qual.field_of_study }} ({{ qual.graduation_year }})</li>
+        {% empty %}
+            <li>No qualifications added</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Referees -->
+    <h4>Referees</h4>
+    <ul>
+        {% for ref in referees_data %}
+            <li>{{ ref.name }} — {{ ref.address }}</li>
+        {% empty %}
+            <li>No referees added</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Cover Letter -->
+    <h4>Cover Letter</h4>
+    <div class="cover-letter-box">
+        {% if cover_letter %}
+            {{ cover_letter|linebreaksbr }}
+        {% else %}
+            <p>No cover letter provided.</p>
+        {% endif %}
+    </div>
+
+    <!-- Resumes -->
+    <h4>Resumes</h4>
+    <ul>
+        {% for resume in resumes_files %}
+            <li>
+                <a href="{{ resume.url }}" target="_blank" rel="noopener">{{ resume.name }}</a>
+            </li>
+        {% empty %}
+            <li>No resumes uploaded</li>
+        {% endfor %}
+    </ul>
+
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="button-row mt-4">
+        <a href="?back=1" class="btn btn-secondary">← Back</a>
+        <button type="submit" class="btn btn-success">Submit & Download PDF →</button>
+    </div>
+</form>
+
+<style>
+.preview-section {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+.preview-section h4 {
+    margin-top: 20px;
+    color: #343a40;
+}
+.cover-letter-box {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    white-space: pre-wrap;
+}
+.button-row {
+    display: flex;
+    justify-content: space-between;
+}
+</style>
+
+{% endblock %}

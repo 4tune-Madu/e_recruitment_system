@@ -43,11 +43,9 @@ DEFAULT_FROM_EMAIL = "no-reply@recruitmenthub.com"
 # ============================================
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "static"     # PythonAnywhere REQUIRES this
+STATIC_ROOT = BASE_DIR / "static"     
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# ❌ Delete STATICFILES_DIRS – causes errors on PythonAnywhere
-# STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # ============================================
 # ✅ MEDIA FILES
